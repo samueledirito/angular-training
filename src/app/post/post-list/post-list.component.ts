@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Post, PostService } from '../post.service';
+import { map, Observable } from 'rxjs';
+import { Post, PostResponse, PostService } from '../post.service';
 
 @Component({
   selector: 'app-post-list',
@@ -13,6 +13,14 @@ export class PostListComponent implements OnInit {
   constructor(private postService: PostService) {}
 
   ngOnInit(): void {
-    this.posts$ = this.postService.getPosts();
+    this.posts$ = this.postService.getPosts().pipe(
+      map((response: PostResponse) => {
+        return response.map((item) => ({
+          id: item.id,
+          body: item.body,
+          title: item.title,
+        }));
+      })
+    );
   }
 }
