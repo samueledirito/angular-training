@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Post, PostResponse, PostService } from '../post.service';
+import { Post, PostService, PostsResponse } from '../post.service';
 
 @Component({
   selector: 'app-post-list',
@@ -14,7 +14,7 @@ export class PostListComponent implements OnInit {
 
   ngOnInit(): void {
     this.posts$ = this.postService.getPosts().pipe(
-      map((response: PostResponse) => {
+      map((response: PostsResponse) => {
         return response.map((item) => ({
           id: item.id,
           body: item.body,

@@ -5,9 +5,10 @@ import { NgModule } from '@angular/core';
 import { PostListComponent } from './post-list/post-list.component';
 import { PostRoutingModule } from './post-routing.module';
 import { PostService } from './post.service';
+import { DetailComponent } from './detail/detail.component';
 
 @NgModule({
-  declarations: [PostListComponent],
+  declarations: [PostListComponent, DetailComponent],
   imports: [CommonModule, PostRoutingModule, HttpClientModule],
   providers: [PostService],
 })

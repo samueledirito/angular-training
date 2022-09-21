@@ -7,7 +7,9 @@ export type PostResponse = {
   userId: number;
   body: string;
   title: string;
-}[];
+};
+
+export type PostsResponse = PostResponse[];
 
 export type Post = {
   id: number;
@@ -19,9 +21,15 @@ export type Post = {
 export class PostService {
   constructor(private http: HttpClient) {}
 
-  getPosts(): Observable<PostResponse> {
-    return this.http.get<PostResponse>(
+  getPosts(): Observable<PostsResponse> {
+    return this.http.get<PostsResponse>(
       'https://jsonplaceholder.typicode.com/posts'
+    );
+  }
+
+  getPost(id: number): Observable<PostResponse> {
+    return this.http.get<PostResponse>(
+      `https://jsonplaceholder.typicode.com/posts/${id}`
     );
   }
 }
