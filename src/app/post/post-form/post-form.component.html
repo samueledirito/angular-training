@@ -1,0 +1,22 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div>
+    <label
+      >Id
+      <input formControlName="id" readonly />
+    </label>
+  </div>
+  <div>
+    <label
+      >Title
+      <input formControlName="title" />
+    </label>
+    <h1 *ngIf="form.get('title')?.errors?.['required']">Obbligatorio</h1>
+  </div>
+  <div>
+    <label
+      >Body
+      <input formControlName="body" />
+    </label>
+  </div>
+  <button type="submit">Ok, salva</button>
+</form>
