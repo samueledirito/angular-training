@@ -10,7 +10,17 @@
       >Title
       <input formControlName="title" />
     </label>
-    <h1 *ngIf="form.get('title')?.errors?.['required']">Obbligatorio</h1>
+    <h5 *ngIf="form.get('title')?.errors?.['required']">Obbligatorio</h5>
+    <h5 *ngIf="form.get('title')?.errors?.['notContainsAsterisks']">
+      Contiene asterischi
+    </h5>
+    <h5 *ngIf="form.get('title')?.errors?.['minlength']">
+      La stringa deve essere lunga
+      {{ form.get('title')?.errors?.['minlength'].requiredLength }} ma
+      attualmente è lunga
+      {{ form.get('title')?.errors?.['minlength'].actualLength }}
+    </h5>
+    <pre> {{ form.get("title")?.errors | json }} </pre>
   </div>
   <div>
     <label

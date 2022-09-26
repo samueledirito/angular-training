@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { filter, Observable, switchMap } from 'rxjs';
 import { PostResponse, PostService } from '../post.service';
@@ -20,9 +26,21 @@ export class PostFormComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       id: [],
-      title: ['', Validators.required],
+      title: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          this.notContainsAsterisks,
+        ],
+      ],
       body: ['', Validators.required],
     });
+  }
+
+  notContainsAsterisks(control: AbstractControl): ValidationErrors | null {
+    if (control.value.includes('*')) return { notContainsAsterisks: true };
+    else return null;
   }
 
   ngOnInit(): void {
