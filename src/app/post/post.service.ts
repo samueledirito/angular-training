@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export type PostResponse = {
   id: number;
@@ -17,6 +17,44 @@ export type Post = {
   title: string;
 };
 
+export type UsersResponse = UserResponse[];
+
+export interface Geo {
+  lat: string;
+  lng: string;
+}
+
+export interface Address {
+  street: string;
+  suite: string;
+  city: string;
+  zipcode: string;
+  geo: Geo;
+}
+
+export interface Company {
+  name: string;
+  catchPhrase: string;
+  bs: string;
+}
+
+export interface UserResponse {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: Address;
+  phone: string;
+  website: string;
+  company: Company;
+}
+
+export type User = {
+  id: number;
+  name: string;
+  phone: string;
+};
+
 @Injectable()
 export class PostService {
   constructor(private http: HttpClient) {}
@@ -31,5 +69,15 @@ export class PostService {
     return this.http.get<PostResponse>(
       `https://jsonplaceholder.typicode.com/posts/${id}`
     );
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http
+      .get<UsersResponse>('https://jsonplaceholder.typicode.com/users')
+      .pipe(
+        map((users) =>
+          users.map(({ id, name, phone }) => ({ id, name, phone }))
+        )
+      );
   }
 }

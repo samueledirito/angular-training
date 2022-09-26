@@ -20,13 +20,24 @@
       attualmente è lunga
       {{ form.get('title')?.errors?.['minlength'].actualLength }}
     </h5>
-    <pre> {{ form.get("title")?.errors | json }} </pre>
   </div>
   <div>
     <label
       >Body
       <input formControlName="body" />
     </label>
+  </div>
+  <div>
+    <label
+      >User Id
+      <select formControlName="userId">
+        <option value="" disabled>--Nessun valore--</option>
+        <option [value]="user.id" *ngFor="let user of users$ | async">
+          {{ user.name }} - ({{ user.phone }})
+        </option>
+      </select>
+    </label>
+    <h5 *ngIf="form.get('userId')?.errors?.['required']">Obbligatorio</h5>
   </div>
   <button type="submit">Ok, salva</button>
 </form>

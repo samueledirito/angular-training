@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { filter, Observable, switchMap } from 'rxjs';
-import { PostResponse, PostService } from '../post.service';
+import { PostResponse, PostService, User } from '../post.service';
 
 @Component({
   selector: 'app-post-form',
@@ -18,6 +18,7 @@ import { PostResponse, PostService } from '../post.service';
 export class PostFormComponent implements OnInit {
   post$!: Observable<PostResponse>;
   form: FormGroup;
+  users$!: Observable<User[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +36,7 @@ export class PostFormComponent implements OnInit {
         ],
       ],
       body: ['', Validators.required],
+      userId: ['', Validators.required],
     });
   }
 
@@ -44,12 +46,14 @@ export class PostFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.users$ = this.postService.getUsers();
+
     this.post$ = this.route.params.pipe(
       filter((params) => Boolean(params['id'])),
       switchMap(({ id }) => this.postService.getPost(id))
     );
 
-    this.post$.subscribe((post) => {
+    this.post$.subscribe(({ userId, ...post }) => {
       this.form.patchValue(post);
     });
   }
