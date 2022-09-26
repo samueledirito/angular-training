@@ -6,7 +6,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { filter, Observable, switchMap } from 'rxjs';
 import { PostResponse, PostService, User } from '../post.service';
 
@@ -23,7 +23,8 @@ export class PostFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private postService: PostService
+    private postService: PostService,
+    private router: Router
   ) {
     this.form = this.fb.group({
       id: [],
@@ -53,7 +54,7 @@ export class PostFormComponent implements OnInit {
       switchMap(({ id }) => this.postService.getPost(id))
     );
 
-    this.post$.subscribe(({ userId, ...post }) => {
+    this.post$.subscribe((post) => {
       this.form.patchValue(post);
     });
   }
@@ -62,6 +63,9 @@ export class PostFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log(this.form.value);
+
+    this.postService.savePost(this.form.value).subscribe(() => {
+      this.router.navigateByUrl('/posts');
+    });
   }
 }

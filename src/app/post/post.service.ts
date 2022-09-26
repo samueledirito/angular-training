@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 export type PostResponse = {
   id: number;
@@ -79,5 +79,9 @@ export class PostService {
           users.map(({ id, name, phone }) => ({ id, name, phone }))
         )
       );
+  }
+
+  savePost(post: Post) {
+    return of('vabbè, non deve funzionare per forza.');
   }
 }
